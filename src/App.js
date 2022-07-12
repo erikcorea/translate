@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Textbox from "./components/Textbox";
+import Arrows from "./components/Arrows";
+import Button from "./components/Button";
+import Modal from "./components/Modal";
 
 function App() {
+
+  const [inputLanguage, setInputLanguage] = useState('English');
+  const [outputLanguage, setOutputLanguage] = useState('Polish');
+
+  const handleClick = () => {
+    setInputLanguage(outputLanguage);
+    setOutputLanguage(inputLanguage);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Textbox
+        selectedLanguage={inputLanguage}
+        style='input'
+      />
+      <div className="arrow-container" onClick={handleClick}>
+        <Arrows />
+      </div>
+      <Textbox 
+        selectedLanguage={outputLanguage}
+        style='output'
+      />
     </div>
   );
 }
