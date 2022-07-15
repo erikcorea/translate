@@ -81,3 +81,37 @@ textarea {
   height: 26px;
   fill: #5a5a5d;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.option-list {
+  width: 100%;
+
+}
+
+.search-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.search-bar input {
+  background: url(https://www.gstatic.com/images/icons/material/system/2x/search_grey600_24dp.png) right 8px center no-repeat;
+  
+}
