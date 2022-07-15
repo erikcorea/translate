@@ -61,7 +61,13 @@ function App() {
         />
       </>}
 
-      {showModal && <Modal setShowModal={setShowModal} languages={languages}/>}
+      {showModal && 
+      <Modal 
+      setShowModal={setShowModal} 
+      languages={languages} 
+      chosenLanguage={showModal == 'input' ? inputLanguage : outputLanguage}
+      setChosenLanguage={showModal == 'input' ? setInputLanguage : setOutputLanguage}
+    />}
     </div>
   );
 }
