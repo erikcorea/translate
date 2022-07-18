@@ -18,22 +18,8 @@ function App() {
   const [translatedText, setTranslatedText] = useState('');
 
   const getLanguages = async () => {
-    const options = {
-      method: 'GET',
-      url: 'https://google-translate20.p.rapidapi.com/languages',
-      headers: {
-        'X-RapidAPI-Key': 'dde1ba5765msh6eadd062d6a761dp177264jsnd2fa7b284443',
-        'X-RapidAPI-Host': 'google-translate20.p.rapidapi.com'
-      }
-    };
-    
-    axios.request(options).then(function (response) {
-      console.log(response.data)
-      const arrayOfData = Object.keys(response.data.data).map(key => response.data.data[key])
-      setLanguages(arrayOfData)
-    }).catch(function (error) {
-      console.error(error);
-    });
+    const response = await axios('http://localhost:8000/languages')
+    setLanguages(response.data)
   }
 
   console.log('languages', languages);
@@ -43,26 +29,14 @@ function App() {
   }, [])
 
   const translate = () => {
-      const options = {
-      method: 'GET',
-      url: 'https://google-translate20.p.rapidapi.com/translate',
-      params: {
-        text: textToTranslate,
-        tl: outputLanguage,
-        sl: inputLanguage
-      },
-      headers: {
-        'X-RapidAPI-Key': 'dde1ba5765msh6eadd062d6a761dp177264jsnd2fa7b284443',
-        'X-RapidAPI-Host': 'google-translate20.p.rapidapi.com'
-      }
-    };
+    const data = {
+      textToTranslate, outputLanguage, inputLanguage
+    }
+    const response = await axios('http://localhost:8000/translation', {
+      params: data
+    })
+    setTranslatedText(response.data)
 
-    axios.request(options).then(function (response) {
-      console.log(response.data);
-      setTranslatedText(response.data.data.translation)
-    }).catch(function (error) {
-      console.error(error);
-    });
   }
   
 
