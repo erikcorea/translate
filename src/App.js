@@ -5,6 +5,7 @@ import Button from "./components/Button";
 import Modal from "./components/Modal";
 import axios from 'axios';
 
+//1:05:34
 function App() {
 
   const [showModal, setShowModal] = useState(null);
@@ -12,6 +13,9 @@ function App() {
   const [inputLanguage, setInputLanguage] = useState('English');
   const [outputLanguage, setOutputLanguage] = useState('Polish');
   const [languages, setLanguages] = useState(null);
+
+  const [textToTranslate, setTextToTranslate] = useState('');
+  const [translatedText, setTranslatedText] = useState('');
 
   const getLanguages = async () => {
     const options = {
@@ -37,6 +41,29 @@ function App() {
   useEffect(() => {
     getLanguages()
   }, [])
+
+  const translate = () => {
+      const options = {
+      method: 'GET',
+      url: 'https://google-translate20.p.rapidapi.com/translate',
+      params: {
+        text: textToTranslate,
+        tl: outputLanguage,
+        sl: inputLanguage
+      },
+      headers: {
+        'X-RapidAPI-Key': 'dde1ba5765msh6eadd062d6a761dp177264jsnd2fa7b284443',
+        'X-RapidAPI-Host': 'google-translate20.p.rapidapi.com'
+      }
+    };
+
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+      setTranslatedText(response.data.data.translation)
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
   
 
   const handleClick = () => {
@@ -44,30 +71,44 @@ function App() {
     setOutputLanguage(inputLanguage);
   }
   return (
-    <div className="App">
-      {!showModal && <>
-        <Textbox
-          selectedLanguage={inputLanguage}
-          style='input'
+    <div className="app">
+      {!showModal && (
+        <>
+          <Textbox
+            style="input"
+            setShowModal={setShowModal}
+            selectedLanguage={inputLanguage}
+            setTextToTranslate={setTextToTranslate}
+            textToTranslate={textToTranslate}
+            setTranslatedText={setTranslatedText}
+          />
+          <div className="arrow-container" onClick={handleClick}>
+            <Arrows />
+          </div>
+          <Textbox
+            style="output"
+            setShowModal={setShowModal}
+            selectedLanguage={outputLanguage}
+            translatedText={translatedText}
+          />
+          <div className="button-container" onClick={translate}>
+            <Button />
+          </div>
+        </>
+      )}
+      {showModal && (
+        <Modal
+          showModal={showModal}
           setShowModal={setShowModal}
+          languages={languages}
+          chosenLanguage={
+            showModal === 'input' ? inputLanguage : outputLanguage
+          }
+          setChosenLanguage={
+            showModal === 'input' ? setInputLanguage : setOutputLanguage
+          }
         />
-        <div className="arrow-container" onClick={handleClick}>
-          <Arrows />
-        </div>
-        <Textbox 
-          selectedLanguage={outputLanguage}
-          style='output'
-          setShowModal={setShowModal}
-        />
-      </>}
-
-      {showModal && 
-      <Modal 
-      setShowModal={setShowModal} 
-      languages={languages} 
-      chosenLanguage={showModal == 'input' ? inputLanguage : outputLanguage}
-      setChosenLanguage={showModal == 'input' ? setInputLanguage : setOutputLanguage}
-    />}
+      )}
     </div>
   );
 }

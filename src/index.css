@@ -14,7 +14,7 @@ body {
 
 
 
-.App {
+.app {
   display: flex;
   width: 652px;
   height: 360px;
@@ -161,4 +161,19 @@ textarea {
   padding: 8px;
   width: 11px;
   color: #8ab4f8;
+}
+
+.button-container {
+  color: #bdc1c6;
+  padding: 18px;
+  height: 20px;
+}
+
+
+.input .delete {
+  position: relative;
+  left: 265px;
+  top: -165px;
+  font-size: 50px;
+  color: #bdc1c6;
 }
